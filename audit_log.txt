@@ -1,0 +1,9 @@
+[2026-05-03 20:06:42] ID: 001 | IP: 0:0:0:0:0:0:0:1 | Action: BLOCKED | Reason: Student does not belong to this Course.
+[2026-05-03 20:07:15] ID: 001 | IP: 0:0:0:0:0:0:0:1 | Action: SUCCESS | Reason: Attendance marked
+[2026-05-03 20:07:44] ID: 002 | IP: 0:0:0:0:0:0:0:1 | Action: BLOCKED | Reason: Invalid or expired QR Token.
+[2026-05-03 20:07:44] ID: 002 | IP: 0:0:0:0:0:0:0:1 | Action: BLOCKED | Reason: Invalid or expired QR Token.
+[2026-05-03 20:07:44] ID: 002 | IP: 0:0:0:0:0:0:0:1 | Action: BLOCKED | Reason: Invalid or expired QR Token.
+[2026-05-03 20:08:21] ID: 002 | IP: 0:0:0:0:0:0:0:1 | Action: BLOCKED | Reason: Invalid or expired QR Token.
+[2026-05-03 20:08:52] ID: 002 | IP: 0:0:0:0:0:0:0:1 | Action: SUCCESS | Reason: Attendance marked
+[2026-05-03 20:09:22] ID: 001 | IP: 0:0:0:0:0:0:0:1 | Action: BLOCKED | Reason: Invalid or expired QR Token.
+[2026-05-03 20:09:22] ID: 001 | IP: 0:0:0:0:0:0:0:1 | Action: BLOCKED | Reason: Invalid or expired QR Token.
