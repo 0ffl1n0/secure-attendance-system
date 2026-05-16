@@ -98,6 +98,7 @@ The teacher dashboard is built using **Java Swing**. To ensure a modern, profess
 *   **Typography & Colors**: The UI utilizes the "Segoe UI" font globally for high readability, accompanied by a clean Light Gray/Blue/White color palette.
 *   **Feedback & Interactions**: Action buttons utilize intuitive color coding (Green for Start, Red for Stop) and interactive hand-cursors on hover.
 *   **Dynamic Displays**: The dashboard features live updates, rendering the dynamically generated QR code visually and updating a live-scrolling log of attended students via background timers.
+*   **Theme Management**: A dedicated `ThemeManager` class allows the teacher to instantly toggle the entire application between professional Light and Dark modes without restarting.
 
 ---
 
@@ -238,6 +239,14 @@ classDiagram
         +loadFolders()
     }
 
+    class ThemeManager {
+        +boolean isDarkMode$
+        +applyLightTheme()$
+        +applyDarkTheme()$
+        +toggleTheme()$
+        -updateAllWindows()$
+    }
+
     class Main {
         +main(String[] args)$
     }
@@ -258,6 +267,7 @@ classDiagram
     DashboardUI ..> AttendanceManager : uses
     DashboardUI *-- StudentManagerDialog
     DashboardUI *-- AttendanceFoldersDialog
+    DashboardUI ..> ThemeManager : toggles theme
     
     StudentWebServer ..> SecurityValidator : implements logic
     StudentWebServer ..> SecurityViolationException : throws
@@ -265,6 +275,7 @@ classDiagram
     
     Main ..> DashboardUI : launches
     Main ..> StudentWebServer : launches
+    Main ..> ThemeManager : applies theme
 ```
 
 ---
