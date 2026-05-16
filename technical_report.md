@@ -107,16 +107,16 @@ The structural architecture of the application is mapped out below:
 
 ```mermaid
 classDiagram
-    %% Core Package
+    %% CORE
     class AttendanceManager {
-        -Map~String, Student~ studentDatabase
+        -Map studentDatabase
         -Session activeSession
         +QRTokenGenerator qrTokenGenerator
         +getInstance() AttendanceManager$
         +startSession(Session session)
         +endSession()
         +getStudent(String id) Student
-        +getAllStudents() Collection~Student~
+        +getAllStudents() Collection
         -processAbsences(Session session)
         -saveAbsences()
         -loadAbsences()
@@ -129,7 +129,11 @@ classDiagram
         +validateToken(String token) boolean
     }
 
-    %% Models Package
+    class AuditLogger {
+        +log(String id, String ip, String action, String reason)$
+    }
+
+    %% MODELS
     class User {
         <<abstract>>
         #String id
@@ -137,13 +141,13 @@ classDiagram
         #String email
         +getId() String
         +getName() String
-        +getRole()* String
+        +getRole() String*
     }
 
     class Student {
         -String group
         -String section
-        -Map~String, Integer~ absencesByModule
+        -Map absencesByModule
         +getGroup() String
         +getSection() String
         +getAbsences(String module) int
@@ -164,26 +168,26 @@ classDiagram
         #double latitude
         #double longitude
         #String module
-        #List~String~ attendedStudentIds
+        #List attendedStudentIds
         +getModule() String
         +addAttendance(String studentId)
-        +isValidStudentForSession(Student student)* boolean
-        +getSessionType()* String
+        +isValidStudentForSession(Student student) boolean*
+        +getSessionType() String*
     }
 
     class TDSession {
-        -List~String~ allowedGroups
+        -List allowedGroups
         +isValidStudentForSession(Student student) boolean
         +getSessionType() String
     }
 
     class CourseSession {
-        -List~String~ allowedSections
+        -List allowedSections
         +isValidStudentForSession(Student student) boolean
         +getSessionType() String
     }
 
-    %% Network Package
+    %% SECURITY
     class SecurityValidator {
         <<interface>>
         +validateToken(String token) boolean
@@ -194,12 +198,23 @@ classDiagram
         +SecurityViolationException(String message)
     }
 
+    class AttendanceSecurityManager {
+        -double MAX_DISTANCE_METERS
+        -Map sessionDeviceLocks
+        +validateLocation() boolean
+        +validateDevice() boolean
+        +validateTimezone() boolean
+        +validateToken() boolean
+        -calculateDistance() double
+    }
+
+    %% NETWORK
     class StudentWebServer {
         -HttpServer server
         +start()
     }
 
-    %% GUI Package
+    %% GUI
     class DashboardUI {
         -JComboBox sessionTypeCombo
         -JComboBox moduleCombo
@@ -224,22 +239,22 @@ classDiagram
     }
 
     class Main {
-        +main(String[] args)
+        +main(String[] args)$
     }
 
-    %% Inheritance Relationships
-    User <|-- Student
-    User <|-- Teacher
-    Session <|-- TDSession
-    Session <|-- CourseSession
-    Exception <|-- SecurityViolationException
+    %% INHERITANCE (EXTENDS)
+    User <|-- Student : extends
+    User <|-- Teacher : extends
+    Session <|-- TDSession : extends
+    Session <|-- CourseSession : extends
+    Exception <|-- SecurityViolationException : extends
     
-    %% Aggregation and Composition
+    %% AGGREGATION & COMPOSITION
     AttendanceManager o-- Student
     AttendanceManager o-- Session
     AttendanceManager *-- QRTokenGenerator
     
-    %% Dependencies
+    %% DEPENDENCIES
     DashboardUI ..> AttendanceManager : uses
     DashboardUI *-- StudentManagerDialog
     DashboardUI *-- AttendanceFoldersDialog
