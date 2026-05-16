@@ -77,10 +77,13 @@
 **16. AttendanceFoldersDialog.java**
 *   **Role:** The popup window to open the CSV folders.
 
+**17. ThemeManager.java**
+*   **Role:** Manages the system-wide UI theme, allowing the teacher to toggle between Light and Dark mode.
+
 ---
 
 ## 6. Package: `default`
-**17. Main.java**
+**18. Main.java**
 *   **Role:** The entry point. It applies the UI Theme and starts the Web Server and Dashboard.
 
 ---
@@ -220,6 +223,14 @@ classDiagram
         +loadFolders()
     }
 
+    class ThemeManager {
+        +boolean isDarkMode$
+        +applyLightTheme()$
+        +applyDarkTheme()$
+        +toggleTheme()$
+        -updateAllWindows()$
+    }
+
     class Main {
         +main(String[] args)$
     }
@@ -240,6 +251,7 @@ classDiagram
     DashboardUI ..> AttendanceManager : uses
     DashboardUI *-- StudentManagerDialog
     DashboardUI *-- AttendanceFoldersDialog
+    DashboardUI ..> ThemeManager : toggles theme
     
     StudentWebServer ..> SecurityValidator : implements logic
     StudentWebServer ..> SecurityViolationException : throws
@@ -247,4 +259,5 @@ classDiagram
     
     Main ..> DashboardUI : launches
     Main ..> StudentWebServer : launches
+    Main ..> ThemeManager : applies theme
 ```
