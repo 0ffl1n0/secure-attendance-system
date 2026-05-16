@@ -20,7 +20,7 @@ public class DashboardUI extends JFrame {
     private JTextField ngrokUrlField;
     private JComboBox<String> sessionTypeCombo;
     private JComboBox<String> moduleCombo;
-    private JList<String> groupsList;
+    private JComboBox<String> groupsCombo;
     private Timer qrTimer;
     private Timer uiUpdateTimer;
 
@@ -38,7 +38,7 @@ public class DashboardUI extends JFrame {
     }
 
     private void initUI() {
-        JPanel controlPanel = new JPanel(new GridLayout(13, 1, 10, 10));
+        JPanel controlPanel = new JPanel(new GridLayout(12, 1, 10, 10));
         controlPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createTitledBorder("Session Controls"),
             BorderFactory.createEmptyBorder(10, 10, 10, 10)
@@ -64,14 +64,12 @@ public class DashboardUI extends JFrame {
         controlPanel.add(sessionTypeCombo);
 
         controlPanel.add(new JLabel("Select Groups/Sections:"));
-        DefaultListModel<String> groupsModel = new DefaultListModel<>();
-        groupsList = new JList<>(groupsModel);
-        groupsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        JScrollPane listScroller = new JScrollPane(groupsList);
-        controlPanel.add(listScroller);
+        DefaultComboBoxModel<String> groupsModel = new DefaultComboBoxModel<>();
+        groupsCombo = new JComboBox<>(groupsModel);
+        controlPanel.add(groupsCombo);
 
         sessionTypeCombo.addActionListener(e -> {
-            groupsModel.clear();
+            groupsModel.removeAllElements();
             if ("TD".equals(sessionTypeCombo.getSelectedItem())) {
                 groupsModel.addElement("A1"); groupsModel.addElement("A2");
                 groupsModel.addElement("A3"); groupsModel.addElement("A4");
@@ -110,12 +108,23 @@ public class DashboardUI extends JFrame {
         stopBtn.addActionListener(e -> stopSession());
         controlPanel.add(stopBtn);
 
-        JButton themeBtn = new JButton("Toggle Dark/Light Mode");
-        themeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        themeBtn.addActionListener(e -> gui.ThemeManager.toggleTheme());
-        controlPanel.add(themeBtn);
-
         add(controlPanel, BorderLayout.WEST);
+
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        JButton themeBtn = new JButton("🌙");
+        themeBtn.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 20));
+        themeBtn.setToolTipText("Toggle Dark/Light Mode");
+        themeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        themeBtn.setFocusPainted(false);
+        // Make it look like a clean icon button
+        themeBtn.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        themeBtn.setContentAreaFilled(false);
+        themeBtn.addActionListener(e -> {
+            gui.ThemeManager.toggleTheme();
+            themeBtn.setText(gui.ThemeManager.isDarkMode ? "☀️" : "🌙");
+        });
+        headerPanel.add(themeBtn);
+        add(headerPanel, BorderLayout.NORTH);
 
         JPanel qrPanel = new JPanel(new BorderLayout());
         qrPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -150,12 +159,14 @@ public class DashboardUI extends JFrame {
     private void startSession() {
         String type = (String) sessionTypeCombo.getSelectedItem();
         String module = (String) moduleCombo.getSelectedItem();
-        List<String> selected = groupsList.getSelectedValuesList();
+        String selectedGroupOrSection = (String) groupsCombo.getSelectedItem();
 
-        if (selected.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please select at least one group/section.");
+        if (selectedGroupOrSection == null) {
+            JOptionPane.showMessageDialog(this, "Please select a group/section.");
             return;
         }
+
+        List<String> selected = java.util.Collections.singletonList(selectedGroupOrSection);
 
         String sessionId = "S" + System.currentTimeMillis();
         Session session;
