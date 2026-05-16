@@ -3,13 +3,10 @@ package core;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-/**
- * Generates dynamic, short-lived encrypted tokens for the QR code.
- */
 public class QRTokenGenerator {
     private static final SecureRandom secureRandom = new SecureRandom();
     private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
-    
+
     private String currentToken;
     private long tokenCreationTime;
     private static final long TOKEN_VALIDITY_MS = 30000; // 30 seconds

@@ -6,47 +6,48 @@ import models.Student;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Singleton managing application state.
- */
 public class AttendanceManager {
     private static AttendanceManager instance;
-    
-    // In-memory data
+
     private Map<String, Student> studentDatabase;
     private Session activeSession;
-    
+
     public final QRTokenGenerator qrTokenGenerator;
-    
+
     private AttendanceManager() {
         studentDatabase = new HashMap<>();
         qrTokenGenerator = new QRTokenGenerator();
         loadMockStudents();
     }
-    
+
     public static AttendanceManager getInstance() {
         if (instance == null) {
             instance = new AttendanceManager();
         }
         return instance;
     }
-    
+
     private void loadMockStudents() {
-        // Populated with the exact provided student list
         studentDatabase.put("001", new Student("001", "AIT AMER MEZIANE HOCINE", "ait.amer@student.edu", "A2", "SecA"));
-        studentDatabase.put("002", new Student("002", "SAADI MOHAMMED MONCIF", "saadi.mohammed@student.edu", "B1", "SecB"));
-        studentDatabase.put("003", new Student("003", "BOUCENNA MOHAMMED ANES", "boucenna.mohammed@student.edu", "A1", "SecA"));
-        studentDatabase.put("004", new Student("004", "ZENGLA MOHAMMED ABDELILLAH", "zengla.mohammed@student.edu", "B1", "SecB"));
+        studentDatabase.put("002",
+                new Student("002", "SAADI MOHAMMED MONCIF", "saadi.mohammed@student.edu", "B1", "SecB"));
+        studentDatabase.put("003",
+                new Student("003", "BOUCENNA MOHAMMED ANES", "boucenna.mohammed@student.edu", "A1", "SecA"));
+        studentDatabase.put("004",
+                new Student("004", "ZENGLA MOHAMMED ABDELILLAH", "zengla.mohammed@student.edu", "B1", "SecB"));
         studentDatabase.put("005", new Student("005", "selah abdelhak", "selah.abdelhak@student.edu", "B1", "SecB"));
-        studentDatabase.put("006", new Student("006", "lahacani mohammed reda", "lahacani.mohammed@student.edu", "B1", "SecB"));
+        studentDatabase.put("006",
+                new Student("006", "lahacani mohammed reda", "lahacani.mohammed@student.edu", "B1", "SecB"));
         studentDatabase.put("007", new Student("007", "HEDDADI RABEH", "heddadi.rabeh@student.edu", "A1", "SecA"));
         studentDatabase.put("008", new Student("008", "TOUMI YACINE", "toumi.yacine@student.edu", "A1", "SecA"));
-        studentDatabase.put("009", new Student("009", "REGHDA MOHAMMED ZAKARIA", "reghda.mohammed@student.edu", "A1", "SecA"));
-        studentDatabase.put("010", new Student("010", "kassoul mohammed ali", "kassoul.mohammed@student.edu", "A2", "SecA"));
-        
+        studentDatabase.put("009",
+                new Student("009", "REGHDA MOHAMMED ZAKARIA", "reghda.mohammed@student.edu", "A1", "SecA"));
+        studentDatabase.put("010",
+                new Student("010", "kassoul mohammed ali", "kassoul.mohammed@student.edu", "A2", "SecA"));
+
         loadAbsences();
     }
-    
+
     private void loadAbsences() {
         java.io.File file = new java.io.File("absences.txt");
         if (file.exists()) {
@@ -70,7 +71,7 @@ public class AttendanceManager {
             }
         }
     }
-    
+
     private void saveAbsences() {
         try (java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter("absences.txt"))) {
             for (Student s : studentDatabase.values()) {
@@ -88,27 +89,27 @@ public class AttendanceManager {
     public Student getStudent(String studentId) {
         return studentDatabase.get(studentId);
     }
-    
+
     public void addStudent(Student student) {
         studentDatabase.put(student.getId(), student);
     }
-    
+
     public void removeStudent(String studentId) {
         studentDatabase.remove(studentId);
     }
-    
+
     public java.util.Collection<Student> getAllStudents() {
         return studentDatabase.values();
     }
-    
+
     public void startSession(Session session) {
         this.activeSession = session;
     }
-    
+
     public Session getActiveSession() {
         return activeSession;
     }
-    
+
     public void endSession() {
         if (activeSession != null) {
             processAbsences(activeSession);
@@ -125,7 +126,9 @@ public class AttendanceManager {
                     if (!session.getAttendedStudentIds().contains(s.getId())) {
                         s.addAbsence(currentModule);
                         if (s.getAbsences(currentModule) == 3) {
-                            writer.println("ID: " + s.getId() + " | Name: " + s.getName() + " | Group: " + s.getGroup() + " | Section: " + s.getSection() + " | Module: " + currentModule + " | Reached 3 Absences");
+                            writer.println("ID: " + s.getId() + " | Name: " + s.getName() + " | Group: " + s.getGroup()
+                                    + " | Section: " + s.getSection() + " | Module: " + currentModule
+                                    + " | Reached 3 Absences");
                         }
                     }
                 }

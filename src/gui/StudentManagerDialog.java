@@ -67,9 +67,7 @@ public class StudentManagerDialog extends JDialog {
         JTextField nameField = new JTextField();
         JTextField emailField = new JTextField();
         
-        // Setup Groups combo
         JComboBox<String> groupField = new JComboBox<>(new String[]{"A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4"});
-        // Setup Section combo
         JComboBox<String> secField = new JComboBox<>(new String[]{"SecA", "SecB"});
 
         form.add(new JLabel("ID:")); form.add(idField);

@@ -1,9 +1,5 @@
 package models;
 
-/**
- * Abstract base class representing a system user.
- * Demonstrates Abstraction and Inheritance.
- */
 public abstract class User {
     protected String id;
     protected String name;

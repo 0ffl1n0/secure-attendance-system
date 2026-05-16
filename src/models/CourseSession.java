@@ -2,10 +2,7 @@ package models;
 
 import java.util.List;
 
-/**
- * Represents a Course session.
- * Allows selection for 2 sections.
- */
+
 public class CourseSession extends Session {
     private List<String> allowedSections;
 

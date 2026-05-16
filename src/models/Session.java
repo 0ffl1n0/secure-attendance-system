@@ -41,7 +41,7 @@ public abstract class Session {
     public double getLongitude() {
         return longitude;
     }
-    
+
     public List<String> getAttendedStudentIds() {
         return attendedStudentIds;
     }
@@ -56,6 +56,6 @@ public abstract class Session {
      * Polymorphic method to validate if a student belongs to this session type.
      */
     public abstract boolean isValidStudentForSession(Student student);
-    
+
     public abstract String getSessionType();
 }

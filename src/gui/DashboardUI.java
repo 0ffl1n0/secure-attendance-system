@@ -24,7 +24,6 @@ public class DashboardUI extends JFrame {
     private Timer qrTimer;
     private Timer uiUpdateTimer;
 
-    // Dummy coordinates for the classroom (e.g., Algiers coordinates)
     private static final double CLASS_LAT = 36.752887;
     private static final double CLASS_LNG = 3.042048;
 
@@ -32,15 +31,14 @@ public class DashboardUI extends JFrame {
         setTitle("Attendance Dashboard (Teacher)");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout(15, 15)); // Increased gap for a cleaner look
+        setLayout(new BorderLayout(15, 15));
         ((JPanel)getContentPane()).setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15)); // Global outer padding
 
         initUI();
     }
 
     private void initUI() {
-        // --- Left Panel: Controls ---
-        JPanel controlPanel = new JPanel(new GridLayout(12, 1, 10, 10));
+        JPanel controlPanel = new JPanel(new GridLayout(13, 1, 10, 10));
         controlPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createTitledBorder("Session Controls"),
             BorderFactory.createEmptyBorder(10, 10, 10, 10)
@@ -84,7 +82,7 @@ public class DashboardUI extends JFrame {
                 groupsModel.addElement("SecB");
             }
         });
-        sessionTypeCombo.setSelectedIndex(0); // Trigger population
+        sessionTypeCombo.setSelectedIndex(0); 
 
         JButton manageStudentsBtn = new JButton("Manage Students");
         manageStudentsBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -97,7 +95,7 @@ public class DashboardUI extends JFrame {
         controlPanel.add(attendanceFoldersBtn);
 
         JButton startBtn = new JButton("Start Session");
-        startBtn.setBackground(new Color(34, 197, 94)); // #22C55E
+        startBtn.setBackground(new Color(34, 197, 94)); 
         startBtn.setForeground(Color.WHITE);
         startBtn.setFocusPainted(false);
         startBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -105,16 +103,20 @@ public class DashboardUI extends JFrame {
         controlPanel.add(startBtn);
 
         JButton stopBtn = new JButton("Stop Session");
-        stopBtn.setBackground(new Color(239, 68, 68)); // #EF4444
+        stopBtn.setBackground(new Color(239, 68, 68)); 
         stopBtn.setForeground(Color.WHITE);
         stopBtn.setFocusPainted(false);
         stopBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stopBtn.addActionListener(e -> stopSession());
         controlPanel.add(stopBtn);
 
+        JButton themeBtn = new JButton("Toggle Dark/Light Mode");
+        themeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        themeBtn.addActionListener(e -> gui.ThemeManager.toggleTheme());
+        controlPanel.add(themeBtn);
+
         add(controlPanel, BorderLayout.WEST);
 
-        // --- Center Panel: QR Code ---
         JPanel qrPanel = new JPanel(new BorderLayout());
         qrPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createTitledBorder("Dynamic QR Code"),
@@ -129,7 +131,6 @@ public class DashboardUI extends JFrame {
 
         add(qrPanel, BorderLayout.CENTER);
 
-        // --- Right Panel: Attendance Log ---
         JPanel logPanel = new JPanel(new BorderLayout());
         logPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createTitledBorder("Live Attendance"),
@@ -142,7 +143,6 @@ public class DashboardUI extends JFrame {
 
         add(logPanel, BorderLayout.EAST);
         
-        // Timer to refresh the attendance list every 2 seconds
         uiUpdateTimer = new Timer(2000, e -> updateAttendanceLog());
         uiUpdateTimer.start();
     }
@@ -172,7 +172,6 @@ public class DashboardUI extends JFrame {
 
         updateQRCode();
 
-        // Refresh QR Code every 30 seconds
         if (qrTimer != null) {
             qrTimer.stop();
         }

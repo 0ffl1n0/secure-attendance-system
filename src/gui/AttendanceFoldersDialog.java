@@ -9,35 +9,32 @@ public class AttendanceFoldersDialog extends JDialog {
         super(parent, "Attendance Folders & Excluded Students", true);
         setSize(500, 300);
         setLocationRelativeTo(parent);
-        
-        // Main container
+
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Group Buttons
         JPanel gridPanel = new JPanel(new GridLayout(3, 4, 10, 10));
         gridPanel.setBorder(BorderFactory.createTitledBorder("Open Group Folders"));
-        
-        String[] folders = {"A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "SecA", "SecB"};
+
+        String[] folders = { "A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "SecA", "SecB" };
         for (String folder : folders) {
             JButton btn = new JButton("Open " + folder);
             btn.setBackground(UIManager.getColor("Button.background"));
             btn.addActionListener(e -> openFolder("attendance_data/" + folder));
             gridPanel.add(btn);
         }
-        
+
         panel.add(gridPanel, BorderLayout.CENTER);
 
-        // Excluded Students Button
         JPanel bottomPanel = new JPanel(new FlowLayout());
         JButton excludedBtn = new JButton("View Excluded Students (> 2 Absences)");
         excludedBtn.setBackground(new Color(169, 46, 34)); // Reddish color for emphasis
         excludedBtn.setForeground(Color.WHITE);
         excludedBtn.addActionListener(e -> openFile("excluded_students.txt"));
         bottomPanel.add(excludedBtn);
-        
+
         panel.add(bottomPanel, BorderLayout.SOUTH);
-        
+
         add(panel);
     }
 
@@ -45,11 +42,12 @@ public class AttendanceFoldersDialog extends JDialog {
         try {
             File dir = new File(path);
             if (!dir.exists()) {
-                dir.mkdirs(); // Create it if it doesn't exist yet
+                dir.mkdirs();
             }
             Desktop.getDesktop().open(dir);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Could not open folder: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Could not open folder: " + ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -61,7 +59,8 @@ public class AttendanceFoldersDialog extends JDialog {
             }
             Desktop.getDesktop().open(file);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Could not open file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Could not open file: " + ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 }
