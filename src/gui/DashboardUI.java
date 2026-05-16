@@ -41,58 +41,58 @@ public class DashboardUI extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout(15, 15));
-        ((JPanel)getContentPane()).setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15)); // Global outer padding
+        ((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15)); // Global outer padding
 
         initUI();
     }
 
-    private void  initUI() {
+    private void initUI() {
         JPanel controlPanel = new JPanel(new GridLayout(12, 1, 10, 10));
         controlPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createTitledBorder("Session Controls"),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
+                BorderFactory.createTitledBorder("Session Controls"),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
-        controlPanel.add(new JLabel("Ngrok Base URL (Required for 
-                kUrlField = new JTextField("https://clamp-zeppelin-pa
-                rolPanel.add(ngrokUrlField);
+        controlPanel.add(new JLabel("Ngrok Base URL (Required for 4G/5G):"));
+        ngrokUrlField = new JTextField("https://clamp-zeppelin-pawing.ngrok-free.dev");
+        controlPanel.add(ngrokUrlField);
+
         controlPanel.add(new JLabel("Module:"));
-        moduleCombo = new JComboBox<>(new String[]{
-            "Object Oriented Programming",
-            "Mathematical Logic",
-            "Mathematical analysis4",
-            "Optics and electromagnetic waves",
-            "Introduction to Systems Information", 
+        moduleCombo = new JComboBox<>(new String[] {
+                "Object Oriented Programming",
+                "Mathematical Logic",
+                "Mathematical analysis4",
+                "Optics and electromagnetic waves",
+                "Introduction to Systems Information",
                 "Probability and Statistic2"
-                
-                rolPanel.add(moduleCombo)
-                
-                rolPanel.add(new JLabel("Session Type:
-                ionTypeCombo = new JComboBox<>(new String[]{"TD", "Course"});
+        });
+        controlPanel.add(moduleCombo);
+
+        controlPanel.add(new JLabel("Session Type:"));
+        sessionTypeCombo = new JComboBox<>(new String[] { "TD", "Course" });
         controlPanel.add(sessionTypeCombo);
 
         controlPanel.add(new JLabel("Select Groups/Sections:"));
         DefaultComboBoxModel<String> groupsModel = new DefaultComboBoxModel<>();
-        groupsCombo = new JComboBox<>(groupsModel);   
+        groupsCombo = new JComboBox<>(groupsModel);
         controlPanel.add(groupsCombo);
 
         sessionTypeCombo.addActionListener(e -> {
             groupsModel.removeAllElements();
             if ("TD".equals(sessionTypeCombo.getSelectedItem())) {
-                groupsModel.addElement("A1"); groupsModel.addElement("A2");
-                groupsModel.addElement("A3"); groupsModel.addElement("A4");
-                groupsModel.addElement("B1"); groupsModel.addElement("B2");
-                groupsModel.addElement("B3"); groupsModel.addElement("B4");
+                groupsModel.addElement("A1");
+                groupsModel.addElement("A2");
+                groupsModel.addElement("A3");
+                groupsModel.addElement("A4");
+                groupsModel.addElement("B1");
+                groupsModel.addElement("B2");
+                groupsModel.addElement("B3");
+                groupsModel.addElement("B4");
             } else {
-                groupsModel.addElement("SecA"
-                ;
-                groupsModel.addElement("SecB"
-                ;
+                groupsModel.addElement("SecA");
+                groupsModel.addElement("SecB");
             }
-                
         });
-                
-        sessionTypeCombo.setSelectedIndex(0); 
+        sessionTypeCombo.setSelectedIndex(0);
 
         JButton manageStudentsBtn = new JButton("Manage Students");
         manageStudentsBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -105,21 +105,21 @@ public class DashboardUI extends JFrame {
         controlPanel.add(attendanceFoldersBtn);
 
         JButton startBtn = new JButton("Start Session");
-        startBtn.setBackground(new Color(34, 197, 94)); 
+        startBtn.setBackground(new Color(34, 197, 94));
         startBtn.setForeground(Color.WHITE);
         startBtn.setFocusPainted(false);
         startBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         startBtn.addActionListener(e -> startSession());
         controlPanel.add(startBtn);
-        
+
         JButton stopBtn = new JButton("Stop Session");
-        stopBtn.setBackground(new Color(239, 68, 68)); 
+        stopBtn.setBackground(new Color(239, 68, 68));
         stopBtn.setForeground(Color.WHITE);
         stopBtn.setFocusPainted(false);
         stopBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stopBtn.addActionListener(e -> stopSession());
         controlPanel.add(stopBtn);
-        
+
         add(controlPanel, BorderLayout.WEST);
 
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
@@ -140,33 +140,33 @@ public class DashboardUI extends JFrame {
 
         JPanel qrPanel = new JPanel(new BorderLayout());
         qrPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createTitledBorder("Dynamic QR Code"),
-            BorderFactory.createEmptyBorder(15, 15, 15, 15)
-        ));
+                BorderFactory.createTitledBorder("Dynamic QR Code"),
+                BorderFactory.createEmptyBorder(15, 15, 15, 15)));
         qrLabel = new JLabel("QR Code will appear here", SwingConstants.CENTER);
         qrPanel.add(qrLabel, BorderLayout.CENTER);
-                
-                usLabel = new JLabel("Status: Stopped", SwingCostatusLabel.setForeground(new Color(239, 68, 68));
+
+        statusLabel = new JLabel("Status: Stopped", SwingConstants.CENTER);
+        statusLabel.setForeground(new Color(239, 68, 68));
         qrPanel.add(statusLabel, BorderLayout.SOUTH);
 
+        add(qrPanel, BorderLayout.CENTER);
 
-        
         JPanel logPanel = new JPanel(new BorderLayout());
         logPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createTitledBorder("Live Attendance"),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
+                BorderFactory.createTitledBorder("Live Attendance"),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         attendanceLog = new JTextArea();
         attendanceLog.setEditable(false);
-                anel.add(new JScrollPane(attendanceLog), BorderLayou
-                anel.setPreferredSize(new Dimension(250, 0));
+        logPanel.add(new JScrollPane(attendanceLog), BorderLayout.CENTER);
+        logPanel.setPreferredSize(new Dimension(250, 0));
+
         add(logPanel, BorderLayout.EAST);
-        
+
         uiUpdateTimer = new Timer(2000, e -> updateAttendanceLog());
         uiUpdateTimer.start();
     }
 
-
+    private void startSession() {
         String type = (String) sessionTypeCombo.getSelectedItem();
         String module = (String) moduleCombo.getSelectedItem();
         String selectedGroupOrSection = (String) groupsCombo.getSelectedItem();
@@ -209,71 +209,71 @@ public class DashboardUI extends JFrame {
         AttendanceManager.getInstance().endSession();
         statusLabel.setText("Status: Stopped");
         statusLabel.setForeground(new Color(239, 68, 68));
-        if (qrTimer != null) qrTimer.stop();
+        if (qrTimer != null)
+            qrTimer.stop();
         qrLabel.setIcon(null);
         qrLabel.setText("Session Stopped");
     }
 
-    private void saveAttenda
-            ceToCSV(Session session) {
+    private void saveAttendanceToCSV(Session session) {
         boolean savedAny = false;
         for (String id : session.getAttendedStudentIds()) {
             models.Student s = AttendanceManager.getInstance().getStudent(id);
             if (s != null) {
-                String folderName = "attendance_data/" + ("TD".equals(session.getSessionType()) ? s.getGroup() : s.getSection());
+                String folderName = "attendance_data/"
+                        + ("TD".equals(session.getSessionType()) ? s.getGroup() : s.getSection());
                 java.io.File folder = new java.io.File(folderName);
-                if (!folder.exists()) folder.mkdirs();
-                
-                String filename = folderName + "/attendance_" + session.getSessionId() + ".csv";
-                boolean isNewFile = !new java.io.File(
-                        ilename).exists();
-                
-                try (java.io.PrintWri
-                    er writer = new 
+                if (!folder.exists())
+                    folder.mkdirs();
 
+                String filename = folderName + "/attendance_" + session.getSessionId() + ".csv";
+                boolean isNewFile = !new java.io.File(filename).exists();
+
+                try (java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(filename, true))) {
+                    if (isNewFile)
+                        writer.println("Student ID,Name,Group,Section");
                     writer.println(s.getId() + "," + s.getName() + "," + s.getGroup() + "," + s.getSection());
                     savedAny = true;
-
+                } catch (java.io.IOException e) {
                     e.printStackTrace();
                 }
-                        
             }
         }
-        
-        if (savedAny) {
-            JOptionPane.showMessageDialog(this, 
-                "✅ Session Ended successfully.\n\n" +
-         
 
-                "Data Saved", JOptionPane.INFORMATION_MESSAGE);
+        if (savedAny) {
+            JOptionPane.showMessageDialog(this,
+                    "✅ Session Ended successfully.\n\n" +
+                            "📂 Attendance lists were saved inside the 'attendance_data/' folders per group/section.\n"
+                            +
+                            "📝 Absences have been calculated automatically.",
+                    "Data Saved", JOptionPane.INFORMATION_MESSAGE);
         } else {
-                    ionPane.showMessageDialog(this, "Sess
-                            
-                            
-                            
-                    
+            JOptionPane.showMessageDialog(this, "Session Ended. No students attended this session.", "Info",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
     private void updateQRCode() {
-        if (AttendanceManager.getInstance().getActiveSession() == null) return;
-                    
+        if (AttendanceManager.getInstance().getActiveSession() == null)
+            return;
 
         String baseUrl = ngrokUrlField.getText().trim();
         String token = AttendanceManager.getInstance().qrTokenGenerator.generateNewToken();
-        
+
         String urlParams = baseUrl + "/attendance?token=" + token;
-            
 
         try {
-            // Use an external API to generate QR code to avoid dragging heavy ZXing depend
-
-            java.net.HttpURLConnection connection = (java.net.HttpURLConnection) new java.net.URL(apiUrl).openConnection();
+            // Use an external API to generate QR code to avoid dragging heavy ZXing
+            // dependencies
+            String apiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="
+                    + java.net.URLEncoder.encode(urlParams, "UTF-8");
+            java.net.HttpURLConnection connection = (java.net.HttpURLConnection) new java.net.URL(apiUrl)
+                    .openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
-            // 
             Image image = ImageIO.read(connection.getInputStream());
-                    
             qrLabel.setText("");
-                    
             qrLabel.setIcon(new ImageIcon(image));
         } catch (Exception ex) {
             qrLabel.setIcon(null);
