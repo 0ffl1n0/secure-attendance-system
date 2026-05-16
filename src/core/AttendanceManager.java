@@ -32,17 +32,17 @@ public class AttendanceManager {
     }
     
     private void loadMockStudents() {
-        // Mocking Data Persistence (in a real app, this would load from a File or DB)
-        studentDatabase.put("001", new Student("001", "Alice", "alice@test.com", "A1", "SecA"));
-        studentDatabase.put("002", new Student("002", "Bob", "bob@test.com", "A2", "SecA"));
-        studentDatabase.put("003", new Student("003", "Charlie", "charlie@test.com", "A3", "SecA"));
-        studentDatabase.put("004", new Student("004", "Diana", "diana@test.com", "A4", "SecA"));
-        studentDatabase.put("005", new Student("005", "Ethan", "ethan@test.com", "B1", "SecB"));
-        studentDatabase.put("006", new Student("006", "Fiona", "fiona@test.com", "B2", "SecB"));
-        studentDatabase.put("007", new Student("007", "George", "george@test.com", "B3", "SecB"));
-        studentDatabase.put("008", new Student("008", "Hannah", "hannah@test.com", "B4", "SecB"));
-        studentDatabase.put("009", new Student("009", "Ian", "ian@test.com", "A1", "SecA"));
-        studentDatabase.put("010", new Student("010", "Julia", "julia@test.com", "B1", "SecB"));
+        // Populated with the exact provided student list
+        studentDatabase.put("001", new Student("001", "AIT AMER MEZIANE HOCINE", "ait.amer@student.edu", "A2", "SecA"));
+        studentDatabase.put("002", new Student("002", "SAADI MOHAMMED MONCIF", "saadi.mohammed@student.edu", "B1", "SecB"));
+        studentDatabase.put("003", new Student("003", "BOUCENNA MOHAMMED ANES", "boucenna.mohammed@student.edu", "A1", "SecA"));
+        studentDatabase.put("004", new Student("004", "ZENGLA MOHAMMED ABDELILLAH", "zengla.mohammed@student.edu", "B1", "SecB"));
+        studentDatabase.put("005", new Student("005", "selah abdelhak", "selah.abdelhak@student.edu", "B1", "SecB"));
+        studentDatabase.put("006", new Student("006", "lahacani mohammed reda", "lahacani.mohammed@student.edu", "B1", "SecB"));
+        studentDatabase.put("007", new Student("007", "HEDDADI RABEH", "heddadi.rabeh@student.edu", "A1", "SecA"));
+        studentDatabase.put("008", new Student("008", "TOUMI YACINE", "toumi.yacine@student.edu", "A1", "SecA"));
+        studentDatabase.put("009", new Student("009", "REGHDA MOHAMMED ZAKARIA", "reghda.mohammed@student.edu", "A1", "SecA"));
+        studentDatabase.put("010", new Student("010", "kassoul mohammed ali", "kassoul.mohammed@student.edu", "A2", "SecA"));
         
         loadAbsences();
     }
@@ -53,10 +53,15 @@ public class AttendanceManager {
             try (java.util.Scanner scanner = new java.util.Scanner(file)) {
                 while (scanner.hasNextLine()) {
                     String[] parts = scanner.nextLine().split(",");
-                    if (parts.length == 2) {
+                    if (parts.length == 3) {
                         Student s = studentDatabase.get(parts[0]);
                         if (s != null) {
-                            s.setAbsences(Integer.parseInt(parts[1]));
+                            s.setAbsences(parts[1], Integer.parseInt(parts[2]));
+                        }
+                    } else if (parts.length == 2) {
+                        Student s = studentDatabase.get(parts[0]);
+                        if (s != null) {
+                            s.setAbsences("Object Oriented Programming", Integer.parseInt(parts[1]));
                         }
                     }
                 }
@@ -69,8 +74,10 @@ public class AttendanceManager {
     private void saveAbsences() {
         try (java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter("absences.txt"))) {
             for (Student s : studentDatabase.values()) {
-                if (s.getAbsences() > 0) {
-                    writer.println(s.getId() + "," + s.getAbsences());
+                for (java.util.Map.Entry<String, Integer> entry : s.getAbsencesMap().entrySet()) {
+                    if (entry.getValue() > 0) {
+                        writer.println(s.getId() + "," + entry.getKey() + "," + entry.getValue());
+                    }
                 }
             }
         } catch (Exception e) {
@@ -112,12 +119,13 @@ public class AttendanceManager {
     private void processAbsences(Session session) {
         java.io.File excludedFile = new java.io.File("excluded_students.txt");
         try (java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(excludedFile, true))) {
+            String currentModule = session.getModule();
             for (Student s : studentDatabase.values()) {
                 if (session.isValidStudentForSession(s)) {
                     if (!session.getAttendedStudentIds().contains(s.getId())) {
-                        s.setAbsences(s.getAbsences() + 1);
-                        if (s.getAbsences() == 3) {
-                            writer.println("ID: " + s.getId() + " | Name: " + s.getName() + " | Group: " + s.getGroup() + " | Section: " + s.getSection() + " | Reached 3 Absences");
+                        s.addAbsence(currentModule);
+                        if (s.getAbsences(currentModule) == 3) {
+                            writer.println("ID: " + s.getId() + " | Name: " + s.getName() + " | Group: " + s.getGroup() + " | Section: " + s.getSection() + " | Module: " + currentModule + " | Reached 3 Absences");
                         }
                     }
                 }

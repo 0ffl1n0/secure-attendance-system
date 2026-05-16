@@ -13,15 +13,21 @@ public abstract class Session {
     protected long startTime;
     protected double latitude;
     protected double longitude;
+    protected String module;
     protected List<String> attendedStudentIds;
 
-    public Session(String sessionId, String teacherId, double latitude, double longitude) {
+    public Session(String sessionId, String teacherId, double latitude, double longitude, String module) {
         this.sessionId = sessionId;
         this.teacherId = teacherId;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.module = module;
         this.startTime = System.currentTimeMillis();
         this.attendedStudentIds = new ArrayList<>();
+    }
+
+    public String getModule() {
+        return module;
     }
 
     public String getSessionId() {

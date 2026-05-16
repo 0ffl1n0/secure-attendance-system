@@ -1,4 +1,0 @@
-ID: 002 | Name: Bob | Group: A2 | Section: SecA | Reached 3 Absences
-ID: 003 | Name: Charlie | Group: A3 | Section: SecA | Reached 3 Absences
-ID: 004 | Name: Diana | Group: A4 | Section: SecA | Reached 3 Absences
-ID: 009 | Name: Ian | Group: A1 | Section: SecA | Reached 3 Absences

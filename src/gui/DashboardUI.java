@@ -19,6 +19,7 @@ public class DashboardUI extends JFrame {
     private JTextArea attendanceLog;
     private JTextField ngrokUrlField;
     private JComboBox<String> sessionTypeCombo;
+    private JComboBox<String> moduleCombo;
     private JList<String> groupsList;
     private Timer qrTimer;
     private Timer uiUpdateTimer;
@@ -31,19 +32,34 @@ public class DashboardUI extends JFrame {
         setTitle("Attendance Dashboard (Teacher)");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout(10, 10));
+        setLayout(new BorderLayout(15, 15)); // Increased gap for a cleaner look
+        ((JPanel)getContentPane()).setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15)); // Global outer padding
 
         initUI();
     }
 
     private void initUI() {
         // --- Left Panel: Controls ---
-        JPanel controlPanel = new JPanel(new GridLayout(10, 1, 5, 5));
-        controlPanel.setBorder(BorderFactory.createTitledBorder("Session Controls"));
+        JPanel controlPanel = new JPanel(new GridLayout(12, 1, 10, 10));
+        controlPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder("Session Controls"),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
 
         controlPanel.add(new JLabel("Ngrok Base URL (Required for 4G/5G):"));
         ngrokUrlField = new JTextField("https://clamp-zeppelin-pawing.ngrok-free.dev");
         controlPanel.add(ngrokUrlField);
+
+        controlPanel.add(new JLabel("Module:"));
+        moduleCombo = new JComboBox<>(new String[]{
+            "Object Oriented Programming",
+            "Mathematical Logic",
+            "Mathematical analysis4",
+            "Optics and electromagnetic waves",
+            "Introduction to Systems Information",
+            "Probability and Statistic2"
+        });
+        controlPanel.add(moduleCombo);
 
         controlPanel.add(new JLabel("Session Type:"));
         sessionTypeCombo = new JComboBox<>(new String[]{"TD", "Course"});
@@ -71,18 +87,28 @@ public class DashboardUI extends JFrame {
         sessionTypeCombo.setSelectedIndex(0); // Trigger population
 
         JButton manageStudentsBtn = new JButton("Manage Students");
+        manageStudentsBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         manageStudentsBtn.addActionListener(e -> new StudentManagerDialog(this).setVisible(true));
         controlPanel.add(manageStudentsBtn);
 
         JButton attendanceFoldersBtn = new JButton("Attendance / Folders");
+        attendanceFoldersBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         attendanceFoldersBtn.addActionListener(e -> new AttendanceFoldersDialog(this).setVisible(true));
         controlPanel.add(attendanceFoldersBtn);
 
         JButton startBtn = new JButton("Start Session");
+        startBtn.setBackground(new Color(34, 197, 94)); // #22C55E
+        startBtn.setForeground(Color.WHITE);
+        startBtn.setFocusPainted(false);
+        startBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         startBtn.addActionListener(e -> startSession());
         controlPanel.add(startBtn);
 
         JButton stopBtn = new JButton("Stop Session");
+        stopBtn.setBackground(new Color(239, 68, 68)); // #EF4444
+        stopBtn.setForeground(Color.WHITE);
+        stopBtn.setFocusPainted(false);
+        stopBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stopBtn.addActionListener(e -> stopSession());
         controlPanel.add(stopBtn);
 
@@ -90,18 +116,25 @@ public class DashboardUI extends JFrame {
 
         // --- Center Panel: QR Code ---
         JPanel qrPanel = new JPanel(new BorderLayout());
-        qrPanel.setBorder(BorderFactory.createTitledBorder("Dynamic QR Code"));
+        qrPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder("Dynamic QR Code"),
+            BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        ));
         qrLabel = new JLabel("QR Code will appear here", SwingConstants.CENTER);
         qrPanel.add(qrLabel, BorderLayout.CENTER);
         
         statusLabel = new JLabel("Status: Stopped", SwingConstants.CENTER);
+        statusLabel.setForeground(new Color(239, 68, 68));
         qrPanel.add(statusLabel, BorderLayout.SOUTH);
 
         add(qrPanel, BorderLayout.CENTER);
 
         // --- Right Panel: Attendance Log ---
         JPanel logPanel = new JPanel(new BorderLayout());
-        logPanel.setBorder(BorderFactory.createTitledBorder("Live Attendance"));
+        logPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder("Live Attendance"),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
         attendanceLog = new JTextArea();
         attendanceLog.setEditable(false);
         logPanel.add(new JScrollPane(attendanceLog), BorderLayout.CENTER);
@@ -116,6 +149,7 @@ public class DashboardUI extends JFrame {
 
     private void startSession() {
         String type = (String) sessionTypeCombo.getSelectedItem();
+        String module = (String) moduleCombo.getSelectedItem();
         List<String> selected = groupsList.getSelectedValuesList();
 
         if (selected.isEmpty()) {
@@ -127,13 +161,14 @@ public class DashboardUI extends JFrame {
         Session session;
 
         if ("TD".equals(type)) {
-            session = new TDSession(sessionId, "T001", CLASS_LAT, CLASS_LNG, selected);
+            session = new TDSession(sessionId, "T001", CLASS_LAT, CLASS_LNG, module, selected);
         } else {
-            session = new CourseSession(sessionId, "T001", CLASS_LAT, CLASS_LNG, selected);
+            session = new CourseSession(sessionId, "T001", CLASS_LAT, CLASS_LNG, module, selected);
         }
 
         AttendanceManager.getInstance().startSession(session);
         statusLabel.setText("Status: Active (" + type + ")");
+        statusLabel.setForeground(new Color(34, 197, 94));
 
         updateQRCode();
 
@@ -153,6 +188,7 @@ public class DashboardUI extends JFrame {
 
         AttendanceManager.getInstance().endSession();
         statusLabel.setText("Status: Stopped");
+        statusLabel.setForeground(new Color(239, 68, 68));
         if (qrTimer != null) qrTimer.stop();
         qrLabel.setIcon(null);
         qrLabel.setText("Session Stopped");

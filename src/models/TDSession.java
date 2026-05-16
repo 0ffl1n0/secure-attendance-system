@@ -10,8 +10,8 @@ import java.util.List;
 public class TDSession extends Session {
     private List<String> allowedGroups;
 
-    public TDSession(String sessionId, String teacherId, double latitude, double longitude, List<String> allowedGroups) {
-        super(sessionId, teacherId, latitude, longitude);
+    public TDSession(String sessionId, String teacherId, double latitude, double longitude, String module, List<String> allowedGroups) {
+        super(sessionId, teacherId, latitude, longitude, module);
         this.allowedGroups = allowedGroups;
     }
 

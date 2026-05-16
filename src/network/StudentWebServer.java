@@ -58,12 +58,15 @@ public class StudentWebServer {
                 String html = "<!DOCTYPE html><html><head><title>Mark Attendance</title>" +
                         "<meta name='viewport' content='width=device-width, initial-scale=1'>" +
                         "<style>" +
-                        "body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }" +
-                        ".container { background: rgba(255, 255, 255, 0.1); padding: 2rem; border-radius: 12px; backdrop-filter: blur(10px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }" +
-                        "input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 6px; border: none; outline: none; box-sizing: border-box; }" +
-                        "button { width: 100%; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s; }" +
-                        "button:hover { background: #2563eb; }" +
-                        "#status { margin-top: 15px; color: #fbbf24; font-size: 0.9em; }" +
+                        "body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #1E3A8A; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }" +
+                        ".container { background: #ffffff; padding: 2.5rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(30, 58, 138, 0.1); text-align: center; width: 90%; max-width: 400px; border: 1px solid rgba(37, 99, 235, 0.1); }" +
+                        "h2 { color: #1E3A8A; margin-top: 0; }" +
+                        "p { color: #475569; margin-bottom: 2rem; }" +
+                        "input { width: 100%; padding: 12px; margin: 10px 0 20px 0; border-radius: 6px; border: 2px solid #e2e8f0; outline: none; box-sizing: border-box; font-size: 16px; color: #1E3A8A; transition: border-color 0.3s; }" +
+                        "input:focus { border-color: #2563EB; }" +
+                        "button { width: 100%; padding: 14px; background: #2563EB; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2); }" +
+                        "button:hover { background: #1E3A8A; transform: translateY(-1px); box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3); }" +
+                        "#status { margin-top: 20px; color: #1E3A8A; font-weight: 600; font-size: 0.95em; }" +
                         "</style>" +
                         "</head><body>" +
                         "<div class='container'>" +
@@ -170,6 +173,9 @@ public class StudentWebServer {
                     }
                     if (!activeSession.isValidStudentForSession(student)) {
                         throw new SecurityViolationException("Student does not belong to this " + activeSession.getSessionType() + ".");
+                    }
+                    if (student.getAbsences(activeSession.getModule()) > 2) {
+                        throw new SecurityViolationException("Student is excluded from " + activeSession.getModule() + " due to >2 absences.");
                     }
 
                     // Success

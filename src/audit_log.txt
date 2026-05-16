@@ -1,8 +1,1 @@
-[2026-05-03 20:02:40] ID: 001 | IP: 0:0:0:0:0:0:0:1 | Action: BLOCKED | Reason: Location check failed: Student is 17504.35 meters away. Max allowed is 50m.
-[2026-05-03 20:27:24] ID: 001 | IP: 0:0:0:0:0:0:0:1 | Action: SUCCESS | Reason: Attendance marked
-[2026-05-03 20:31:55] ID: 001 | IP: 0:0:0:0:0:0:0:1 | Action: SUCCESS | Reason: Attendance marked
-[2026-05-03 20:32:41] ID: 001 | IP: 0:0:0:0:0:0:0:1 | Action: BLOCKED | Reason: Invalid or expired QR Token.
-[2026-05-03 20:33:11] ID: 001 | IP: 0:0:0:0:0:0:0:1 | Action: SUCCESS | Reason: Attendance marked
-[2026-05-03 20:37:21] ID: 001 | IP: 0:0:0:0:0:0:0:1 | Action: SUCCESS | Reason: Attendance marked
-[2026-05-03 20:37:51] ID: 001 | IP: 0:0:0:0:0:0:0:1 | Action: SUCCESS | Reason: Attendance marked
-[2026-05-03 20:38:21] ID: 001 | IP: 0:0:0:0:0:0:0:1 | Action: SUCCESS | Reason: Attendance marked
+[2026-05-16 16:17:29] ID: 008 | IP: 0:0:0:0:0:0:0:1 | Action: SUCCESS | Reason: Attendance marked
