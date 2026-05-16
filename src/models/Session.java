@@ -3,10 +3,15 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Abstract class defining an attendance session.
- * Demonstrates Polymorphism and Abstraction.
- */
+// ============================================================
+//  AUTHOR  : Zaki
+//  FILE    : Session.java
+//  ABOUT   : Abstract class representing an attendance session.
+//            Holds session ID, location, module, and attended
+//            student list. Defines the abstract polymorphic method
+//            isValidStudentForSession() that TD and Course sessions
+//            implement differently.
+// ============================================================
 public abstract class Session {
     protected String sessionId;
     protected String teacherId;

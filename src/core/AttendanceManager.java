@@ -6,6 +6,14 @@ import models.Student;
 import java.util.HashMap;
 import java.util.Map;
 
+// ============================================================
+//  AUTHOR  : Yacine
+//  FILE    : AttendanceManager.java
+//  ABOUT   : Singleton class that acts as the central brain of
+//            the system. Manages the student database, the active
+//            session, absence tracking (load/save from file),
+//            and processes absences when a session ends.
+// ============================================================
 public class AttendanceManager {
     private static AttendanceManager instance;
 

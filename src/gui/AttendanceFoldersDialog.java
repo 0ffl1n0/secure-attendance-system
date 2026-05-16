@@ -1,3 +1,10 @@
+// ============================================================
+//  AUTHOR  : Yacine
+//  FILE    : AttendanceFoldersDialog.java
+//  ABOUT   : A Swing dialog that lets the teacher open attendance
+//            CSV folders per group/section, and view the list of
+//            students excluded due to exceeding 2 absences.
+// ============================================================
 package gui;
 
 import javax.swing.*;

@@ -1,9 +1,12 @@
 package models;
 
-/**
- * Represents a student in the attendance system.
- * Inherits from User and adds student-specific attributes.
- */
+// ============================================================
+//  AUTHOR  : Zaki
+//  FILE    : Student.java
+//  ABOUT   : Concrete subclass of User representing a student.
+//            Adds group, section, and per-module absence tracking.
+//            Inherits and overrides getRole() returning "Student".
+// ============================================================
 public class Student extends User {
     private String group;
     private String section;

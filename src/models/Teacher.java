@@ -1,8 +1,12 @@
 package models;
 
-/**
- * Represents a teacher in the system who can manage sessions.
- */
+// ============================================================
+//  AUTHOR  : Zaki
+//  FILE    : Teacher.java
+//  ABOUT   : Concrete subclass of User representing a teacher.
+//            Adds a department attribute and overrides getRole()
+//            returning "Teacher". Used to identify session owners.
+// ============================================================
 public class Teacher extends User {
     private String department;
 

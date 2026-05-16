@@ -1,3 +1,12 @@
+// ============================================================
+//  AUTHOR  : Yacine
+//  FILE    : DashboardUI.java
+//  ABOUT   : Main teacher desktop dashboard (Swing JFrame).
+//            Allows starting/stopping sessions, selecting module,
+//            session type (TD/Course) and group. Displays a
+//            live-refreshing QR code every 30 seconds and shows
+//            a real-time attendance log on the side.
+// ============================================================
 package gui;
 
 import core.AttendanceManager;
@@ -37,35 +46,34 @@ public class DashboardUI extends JFrame {
         initUI();
     }
 
-    private void initUI() {
+    private void  initUI() {
         JPanel controlPanel = new JPanel(new GridLayout(12, 1, 10, 10));
         controlPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createTitledBorder("Session Controls"),
             BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
 
-        controlPanel.add(new JLabel("Ngrok Base URL (Required for 4G/5G):"));
-        ngrokUrlField = new JTextField("https://clamp-zeppelin-pawing.ngrok-free.dev");
-        controlPanel.add(ngrokUrlField);
-
+        controlPanel.add(new JLabel("Ngrok Base URL (Required for 
+                kUrlField = new JTextField("https://clamp-zeppelin-pa
+                rolPanel.add(ngrokUrlField);
         controlPanel.add(new JLabel("Module:"));
         moduleCombo = new JComboBox<>(new String[]{
             "Object Oriented Programming",
             "Mathematical Logic",
             "Mathematical analysis4",
             "Optics and electromagnetic waves",
-            "Introduction to Systems Information",
-            "Probability and Statistic2"
-        });
-        controlPanel.add(moduleCombo);
-
-        controlPanel.add(new JLabel("Session Type:"));
-        sessionTypeCombo = new JComboBox<>(new String[]{"TD", "Course"});
+            "Introduction to Systems Information", 
+                "Probability and Statistic2"
+                
+                rolPanel.add(moduleCombo)
+                
+                rolPanel.add(new JLabel("Session Type:
+                ionTypeCombo = new JComboBox<>(new String[]{"TD", "Course"});
         controlPanel.add(sessionTypeCombo);
 
         controlPanel.add(new JLabel("Select Groups/Sections:"));
         DefaultComboBoxModel<String> groupsModel = new DefaultComboBoxModel<>();
-        groupsCombo = new JComboBox<>(groupsModel);
+        groupsCombo = new JComboBox<>(groupsModel);   
         controlPanel.add(groupsCombo);
 
         sessionTypeCombo.addActionListener(e -> {
@@ -76,10 +84,14 @@ public class DashboardUI extends JFrame {
                 groupsModel.addElement("B1"); groupsModel.addElement("B2");
                 groupsModel.addElement("B3"); groupsModel.addElement("B4");
             } else {
-                groupsModel.addElement("SecA");
-                groupsModel.addElement("SecB");
+                groupsModel.addElement("SecA"
+                ;
+                groupsModel.addElement("SecB"
+                ;
             }
+                
         });
+                
         sessionTypeCombo.setSelectedIndex(0); 
 
         JButton manageStudentsBtn = new JButton("Manage Students");
@@ -99,7 +111,7 @@ public class DashboardUI extends JFrame {
         startBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         startBtn.addActionListener(e -> startSession());
         controlPanel.add(startBtn);
-
+        
         JButton stopBtn = new JButton("Stop Session");
         stopBtn.setBackground(new Color(239, 68, 68)); 
         stopBtn.setForeground(Color.WHITE);
@@ -107,7 +119,7 @@ public class DashboardUI extends JFrame {
         stopBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stopBtn.addActionListener(e -> stopSession());
         controlPanel.add(stopBtn);
-
+        
         add(controlPanel, BorderLayout.WEST);
 
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
@@ -133,13 +145,12 @@ public class DashboardUI extends JFrame {
         ));
         qrLabel = new JLabel("QR Code will appear here", SwingConstants.CENTER);
         qrPanel.add(qrLabel, BorderLayout.CENTER);
-        
-        statusLabel = new JLabel("Status: Stopped", SwingConstants.CENTER);
-        statusLabel.setForeground(new Color(239, 68, 68));
+                
+                usLabel = new JLabel("Status: Stopped", SwingCostatusLabel.setForeground(new Color(239, 68, 68));
         qrPanel.add(statusLabel, BorderLayout.SOUTH);
 
-        add(qrPanel, BorderLayout.CENTER);
 
+        
         JPanel logPanel = new JPanel(new BorderLayout());
         logPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createTitledBorder("Live Attendance"),
@@ -147,16 +158,15 @@ public class DashboardUI extends JFrame {
         ));
         attendanceLog = new JTextArea();
         attendanceLog.setEditable(false);
-        logPanel.add(new JScrollPane(attendanceLog), BorderLayout.CENTER);
-        logPanel.setPreferredSize(new Dimension(250, 0));
-
+                anel.add(new JScrollPane(attendanceLog), BorderLayou
+                anel.setPreferredSize(new Dimension(250, 0));
         add(logPanel, BorderLayout.EAST);
         
         uiUpdateTimer = new Timer(2000, e -> updateAttendanceLog());
         uiUpdateTimer.start();
     }
 
-    private void startSession() {
+
         String type = (String) sessionTypeCombo.getSelectedItem();
         String module = (String) moduleCombo.getSelectedItem();
         String selectedGroupOrSection = (String) groupsCombo.getSelectedItem();
@@ -204,7 +214,8 @@ public class DashboardUI extends JFrame {
         qrLabel.setText("Session Stopped");
     }
 
-    private void saveAttendanceToCSV(Session session) {
+    private void saveAttenda
+            ceToCSV(Session session) {
         boolean savedAny = false;
         for (String id : session.getAttendedStudentIds()) {
             models.Student s = AttendanceManager.getInstance().getStudent(id);
@@ -214,46 +225,55 @@ public class DashboardUI extends JFrame {
                 if (!folder.exists()) folder.mkdirs();
                 
                 String filename = folderName + "/attendance_" + session.getSessionId() + ".csv";
-                boolean isNewFile = !new java.io.File(filename).exists();
+                boolean isNewFile = !new java.io.File(
+                        ilename).exists();
                 
-                try (java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(filename, true))) {
-                    if (isNewFile) writer.println("Student ID,Name,Group,Section");
+                try (java.io.PrintWri
+                    er writer = new 
+
                     writer.println(s.getId() + "," + s.getName() + "," + s.getGroup() + "," + s.getSection());
                     savedAny = true;
-                } catch (java.io.IOException e) {
+
                     e.printStackTrace();
                 }
+                        
             }
         }
         
         if (savedAny) {
             JOptionPane.showMessageDialog(this, 
                 "✅ Session Ended successfully.\n\n" +
-                "📂 Attendance lists were saved inside the 'attendance_data/' folders per group/section.\n" +
-                "📝 Absences have been calculated automatically.", 
+         
+
                 "Data Saved", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Session Ended. No students attended this session.", "Info", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
+                    ionPane.showMessageDialog(this, "Sess
+                            
+                            
+                            
+                    
     private void updateQRCode() {
         if (AttendanceManager.getInstance().getActiveSession() == null) return;
+                    
 
         String baseUrl = ngrokUrlField.getText().trim();
         String token = AttendanceManager.getInstance().qrTokenGenerator.generateNewToken();
         
         String urlParams = baseUrl + "/attendance?token=" + token;
+            
 
         try {
-            // Use an external API to generate QR code to avoid dragging heavy ZXing dependencies
-            String apiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + java.net.URLEncoder.encode(urlParams, "UTF-8");
+            // Use an external API to generate QR code to avoid dragging heavy ZXing depend
+
             java.net.HttpURLConnection connection = (java.net.HttpURLConnection) new java.net.URL(apiUrl).openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
+            // 
             Image image = ImageIO.read(connection.getInputStream());
+                    
             qrLabel.setText("");
+                    
             qrLabel.setIcon(new ImageIcon(image));
         } catch (Exception ex) {
             qrLabel.setIcon(null);

@@ -3,10 +3,13 @@ package models;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Represents a TD session.
- * Allows selection for 4 distinct groups.
- */
+// ============================================================
+//  AUTHOR  : Zaki
+//  FILE    : TDSession.java
+//  ABOUT   : Concrete subclass of Session for TD (lab) sessions.
+//            Overrides isValidStudentForSession() to check if a
+//            student's group is in the allowed groups list.
+// ============================================================
 public class TDSession extends Session {
     private List<String> allowedGroups;
 

@@ -1,3 +1,11 @@
+// ============================================================
+//  AUTHOR  : Yacine
+//  FILE    : StudentWebServer.java
+//  ABOUT   : Embedded HTTP server (port 8080) that serves the
+//            student attendance page and handles form submissions.
+//            Runs all security checks before marking attendance.
+//            Accessible remotely via Ngrok tunneling.
+// ============================================================
 package network;
 
 import com.sun.net.httpserver.HttpExchange;

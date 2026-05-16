@@ -1,9 +1,12 @@
 package security;
 
-/**
- * Custom exception thrown when a security violation is detected
- * (e.g., VPN usage, wrong geolocation, device sharing).
- */
+// ============================================================
+//  AUTHOR  : Zaki
+//  FILE    : SecurityViolationException.java
+//  ABOUT   : Custom checked exception thrown whenever a security
+//            rule is violated (wrong location, VPN detected,
+//            device sharing, or invalid QR token).
+// ============================================================
 public class SecurityViolationException extends Exception {
     public SecurityViolationException(String message) {
         super(message);

@@ -2,7 +2,13 @@ package models;
 
 import java.util.List;
 
-
+// ============================================================
+//  AUTHOR  : Zaki
+//  FILE    : CourseSession.java
+//  ABOUT   : Concrete subclass of Session for full Course sessions.
+//            Overrides isValidStudentForSession() to check if a
+//            student's section matches the allowed sections list.
+// ============================================================
 public class CourseSession extends Session {
     private List<String> allowedSections;
 

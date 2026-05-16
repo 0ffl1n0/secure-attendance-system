@@ -1,3 +1,10 @@
+// ============================================================
+//  AUTHOR  : Yacine
+//  FILE    : Main.java
+//  ABOUT   : Entry point of the entire application. Starts the
+//            embedded HTTP web server on port 8080, then launches
+//            the teacher dashboard GUI on the Swing event thread.
+// ============================================================
 import gui.DashboardUI;
 import network.StudentWebServer;
 

@@ -3,9 +3,14 @@ package security;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Implements security checks to prevent cheating.
- */
+// ============================================================
+//  AUTHOR  : Zaki
+//  FILE    : AttendanceSecurityManager.java
+//  ABOUT   : Implements SecurityValidator. Runs all 4 anti-cheat
+//            checks: GPS distance (Haversine formula), device lock
+//            (IP + browser fingerprint), timezone anti-VPN check,
+//            and QR token expiry validation.
+// ============================================================
 public class AttendanceSecurityManager implements SecurityValidator {
 
     // Increased to 50,000 meters (50km) for testing purposes. 
